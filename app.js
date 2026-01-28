@@ -4,6 +4,21 @@ import { pushToDataLayer } from './tracking.js';
 // Re-export for convenience in other pages
 export { pushToDataLayer };
 
+/**
+ * Generates a consistent 9-digit numeric ID based on an input string (like email).
+ * This ensures the same user always gets the same ID upon login.
+ */
+export const generate9DigitId = (input) => {
+    let hash = 0;
+    const str = String(input).toLowerCase().trim();
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0; // Convert to 32bit integer
+    }
+    // Ensure result is a positive 9-digit number (100,000,000 to 999,999,999)
+    return (Math.abs(hash) % 900000000) + 100000000;
+};
+
 // State Management
 export const getCart = () => {
     const saved = localStorage.getItem('pg_cart');
@@ -102,9 +117,10 @@ export const initLayout = () => {
     
     updateCartBadge();
 
+    // Include user_id in the page_view if user is logged in
     pushToDataLayer('page_view', {
         page_path: window.location.pathname,
         page_title: document.title,
-        user_id: user ? user.id : 'anonymous'
+        user_id: user ? user.uid : 'anonymous'
     });
 };

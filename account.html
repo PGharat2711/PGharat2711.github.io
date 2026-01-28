@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,15 +29,31 @@
         </form>
     </main>
     <script type="module">
-        import { initLayout, pushToDataLayer } from './app.js';
+        import { initLayout, pushToDataLayer, generate9DigitId } from './app.js';
         initLayout();
 
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
-            const user = { id: 'USR-' + Date.now(), name: email.split('@')[0], email };
+            
+            // Generate a deterministic 9-digit ID from the email
+            const uid = generate9DigitId(email);
+            
+            const user = { 
+                id: 'USR-' + Date.now(), 
+                uid: uid.toString(), // The 9-digit code requested
+                name: email.split('@')[0], 
+                email: email 
+            };
+            
             localStorage.setItem('pg_user', JSON.stringify(user));
-            pushToDataLayer('login', { user_id: user.id });
+            
+            // Track login with the User ID
+            pushToDataLayer('login', { 
+                user_id: user.uid,
+                method: 'email' 
+            });
+            
             window.location.href = 'index.html';
         });
     </script>
