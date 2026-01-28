@@ -6,7 +6,7 @@ export const PRODUCTS = [
     price: 89.99,
     category: 'Men',
     description: 'Breathable linen shirt perfect for summer evenings and professional settings.',
-    image: 'https://images.unsplash.com/photo-1598033129183-c4f50c7176c8?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&q=80&w=800',
     rating: 4.5,
     reviews: 124
   },
