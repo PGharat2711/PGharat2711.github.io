@@ -1,5 +1,5 @@
 
-import { pushToDataLayer } from './tracking.js';
+import { pushToDataLayer, trackLogout } from './tracking.js';
 
 // Re-export for convenience in other pages
 export { pushToDataLayer };
@@ -49,6 +49,15 @@ export const getUser = () => {
     return saved ? JSON.parse(saved) : null;
 };
 
+export const logoutUser = () => {
+    const user = getUser();
+    if (user) {
+        trackLogout(user.uid);
+    }
+    localStorage.removeItem('pg_user');
+    window.location.href = 'index.html';
+};
+
 // Global Layout Injection
 export const initLayout = () => {
     const user = getUser();
@@ -76,6 +85,7 @@ export const initLayout = () => {
                             <i class="fa-solid fa-shopping-bag text-xl"></i>
                             <span class="cart-count absolute -top-2 -right-2 bg-black text-white text-[10px] font-bold h-5 w-5 rounded-full flex items-center justify-center hidden">0</span>
                         </a>
+                        ${user ? `<button onclick="window.logoutUser()" class="text-gray-400 hover:text-red-600 transition text-[10px] font-black uppercase tracking-widest hidden lg:inline">Logout</button>` : ''}
                     </div>
                 </div>
             </div>
@@ -115,6 +125,9 @@ export const initLayout = () => {
         document.body.insertAdjacentHTML('beforeend', footerHTML);
     }
     
+    // Attach logout helper to window
+    window.logoutUser = logoutUser;
+
     updateCartBadge();
 
     // Include user_id in the page_view if user is logged in

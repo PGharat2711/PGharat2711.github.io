@@ -130,3 +130,18 @@ export const trackPurchase = (order) => {
     }
   });
 };
+
+export const trackSignUp = (user, method = 'email') => {
+  pushToDataLayer("sign_up", {
+    user_id: user.uid,
+    method: method,
+    timestamp: new Date().toISOString()
+  });
+};
+
+export const trackLogout = (userId) => {
+  pushToDataLayer("logout", {
+    user_id: userId,
+    timestamp: new Date().toISOString()
+  });
+};

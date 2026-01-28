@@ -13,58 +13,212 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; }</style>
+    <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; } .hidden-tab { display: none; }</style>
 </head>
-<body class="bg-white">
+<body class="bg-slate-50">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPBC6CXZ"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    <main class="max-w-md mx-auto px-4 py-24 text-center space-y-12">
-        <h1 class="text-4xl font-serif">Sign In</h1>
-        <form id="login-form" class="space-y-6">
-            <input required id="login-email" type="email" placeholder="Email Address" class="w-full border border-slate-200 px-4 py-4 rounded-lg outline-none focus:border-black">
-            <input required type="password" placeholder="Password" class="w-full border border-slate-200 px-4 py-4 rounded-lg outline-none focus:border-black">
-            <button type="submit" class="w-full bg-black text-white py-5 font-bold uppercase tracking-widest hover:bg-slate-800 transition">Login</button>
-        </form>
+
+    <main class="max-w-4xl mx-auto px-4 py-24 min-h-[70vh]">
+        <div id="auth-container" class="max-w-md mx-auto bg-white p-10 rounded-2xl shadow-sm border border-slate-200">
+            <!-- Tabs Header -->
+            <div id="auth-tabs" class="flex border-b border-slate-100 mb-10">
+                <button id="tab-login" class="flex-1 pb-4 text-sm font-bold uppercase tracking-widest border-b-2 border-black">Login</button>
+                <button id="tab-signup" class="flex-1 pb-4 text-sm font-bold uppercase tracking-widest text-slate-300 border-b-2 border-transparent">Sign Up</button>
+            </div>
+
+            <!-- Login Section -->
+            <div id="login-section" class="space-y-8">
+                <div class="text-center space-y-2">
+                    <h1 class="text-3xl font-serif">Welcome Back</h1>
+                    <p class="text-slate-400 text-xs font-medium uppercase tracking-widest">Sign in to your account</p>
+                </div>
+                <form id="login-form" class="space-y-6">
+                    <input required id="login-email" type="email" placeholder="Email Address" class="w-full border border-slate-200 px-4 py-4 rounded-xl outline-none focus:border-black transition">
+                    <input required type="password" placeholder="Password" class="w-full border border-slate-200 px-4 py-4 rounded-xl outline-none focus:border-black transition">
+                    <button type="submit" class="w-full bg-black text-white py-5 rounded-xl font-bold uppercase tracking-widest hover:bg-slate-800 transition active:scale-[0.98]">Login</button>
+                </form>
+            </div>
+
+            <!-- Sign Up Section -->
+            <div id="signup-section" class="space-y-8 hidden-tab">
+                <div class="text-center space-y-2">
+                    <h1 class="text-3xl font-serif">Join the Legacy</h1>
+                    <p class="text-slate-400 text-xs font-medium uppercase tracking-widest">Create your profile</p>
+                </div>
+                <form id="signup-form" class="space-y-6">
+                    <input required id="signup-name" type="text" placeholder="Full Name" class="w-full border border-slate-200 px-4 py-4 rounded-xl outline-none focus:border-black transition">
+                    <input required id="signup-email" type="email" placeholder="Email Address" class="w-full border border-slate-200 px-4 py-4 rounded-xl outline-none focus:border-black transition">
+                    <input required type="password" placeholder="Password" class="w-full border border-slate-200 px-4 py-4 rounded-xl outline-none focus:border-black transition">
+                    <button type="submit" class="w-full bg-black text-white py-5 rounded-xl font-bold uppercase tracking-widest hover:bg-slate-800 transition active:scale-[0.98]">Register</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile-container" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hidden-tab">
+            <div class="bg-slate-900 h-32 relative">
+                 <div class="absolute -bottom-12 left-10 w-24 h-24 bg-white rounded-2xl shadow-lg border border-slate-100 flex items-center justify-center overflow-hidden">
+                    <i class="fa-solid fa-user-tie text-4xl text-slate-200"></i>
+                 </div>
+            </div>
+            <div class="pt-16 px-10 pb-12 space-y-12">
+                <div class="flex justify-between items-start">
+                    <div class="space-y-2">
+                        <h1 id="profile-display-name" class="text-4xl font-serif">...</h1>
+                        <p id="profile-display-id" class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">UID: 000000000</p>
+                    </div>
+                    <button id="btn-logout" class="text-xs font-bold uppercase tracking-widest text-red-500 hover:text-red-700 transition">Logout</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-8">
+                        <h3 class="text-xs font-black uppercase tracking-widest text-slate-900 border-b pb-4">Personal Details</h3>
+                        <form id="profile-update-form" class="space-y-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Full Name</label>
+                                <input id="profile-input-name" type="text" class="w-full border border-slate-200 px-4 py-3 rounded-lg outline-none focus:border-black">
+                            </div>
+                            <div class="space-y-2 opacity-50">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Email (Fixed)</label>
+                                <input id="profile-input-email" type="email" disabled class="w-full border border-slate-100 bg-slate-50 px-4 py-3 rounded-lg cursor-not-allowed">
+                            </div>
+                            <button type="submit" class="bg-black text-white px-8 py-3 rounded-lg font-bold uppercase tracking-widest text-xs hover:bg-slate-800 transition">Save Changes</button>
+                        </form>
+                    </div>
+
+                    <div class="space-y-8">
+                        <h3 class="text-xs font-black uppercase tracking-widest text-slate-900 border-b pb-4">Membership</h3>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 space-y-4">
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-gem text-amber-500"></i>
+                                <span class="text-sm font-bold">Gold Status Member</span>
+                            </div>
+                            <p class="text-xs text-slate-500 leading-relaxed">As a Prateek Gharat member, you enjoy complimentary worldwide shipping and early access to seasonal collections.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Security</h4>
+                            <button class="text-xs font-bold border-b border-black">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
+
     <script type="module">
-        import { initLayout, pushToDataLayer, generate9DigitId } from './app.js';
+        import { initLayout, pushToDataLayer, generate9DigitId, getUser, logoutUser } from './app.js';
+        import { trackSignUp } from './tracking.js';
         initLayout();
 
-        document.getElementById('login-form').addEventListener('submit', (e) => {
+        const authContainer = document.getElementById('auth-container');
+        const profileContainer = document.getElementById('profile-container');
+        const loginSection = document.getElementById('login-section');
+        const signupSection = document.getElementById('signup-section');
+        const tabLogin = document.getElementById('tab-login');
+        const tabSignup = document.getElementById('tab-signup');
+
+        const updateView = () => {
+            const user = getUser();
+            if (user) {
+                authContainer.classList.add('hidden-tab');
+                profileContainer.classList.remove('hidden-tab');
+                
+                document.getElementById('profile-display-name').innerText = user.name;
+                document.getElementById('profile-display-id').innerText = `UID: ${user.uid}`;
+                document.getElementById('profile-input-name').value = user.name;
+                document.getElementById('profile-input-email').value = user.email;
+            } else {
+                authContainer.classList.remove('hidden-tab');
+                profileContainer.classList.add('hidden-tab');
+            }
+        };
+
+        // Tab Switching
+        tabLogin.onclick = () => {
+            loginSection.classList.remove('hidden-tab');
+            signupSection.classList.add('hidden-tab');
+            tabLogin.className = "flex-1 pb-4 text-sm font-bold uppercase tracking-widest border-b-2 border-black";
+            tabSignup.className = "flex-1 pb-4 text-sm font-bold uppercase tracking-widest text-slate-300 border-b-2 border-transparent";
+        };
+
+        tabSignup.onclick = () => {
+            signupSection.classList.remove('hidden-tab');
+            loginSection.classList.add('hidden-tab');
+            tabSignup.className = "flex-1 pb-4 text-sm font-bold uppercase tracking-widest border-b-2 border-black";
+            tabLogin.className = "flex-1 pb-4 text-sm font-bold uppercase tracking-widest text-slate-300 border-b-2 border-transparent";
+        };
+
+        // Sign Up Logic
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            
-            // Generate a deterministic 9-digit ID from the email
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
             const uid = generate9DigitId(email);
             
             const user = { 
                 id: 'USR-' + Date.now(), 
-                uid: uid.toString(), // The 9-digit code requested
+                uid: uid.toString(),
+                name: name, 
+                email: email 
+            };
+            
+            localStorage.setItem('pg_user', JSON.stringify(user));
+            trackSignUp(user);
+            updateView();
+            window.location.reload(); // Refresh to update nav
+        });
+
+        // Login Logic
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const uid = generate9DigitId(email);
+            
+            const user = { 
+                id: 'USR-' + Date.now(), 
+                uid: uid.toString(),
                 name: email.split('@')[0], 
                 email: email 
             };
             
             localStorage.setItem('pg_user', JSON.stringify(user));
             
-            // Track login with enhanced parameters
-            // Following GA4 documentation + user requirements
             pushToDataLayer('login', { 
                 user_id: user.uid,
                 method: 'email',
-                timestamp: new Date().toISOString(),
-                event_status: 'success',
-                login_type: 'customer_portal'
+                timestamp: new Date().toISOString()
             });
             
-            // Also set user_id globally for subsequent events in this session
-            pushToDataLayer('set_user_properties', {
-                user_id: user.uid
-            });
-
-            window.location.href = 'index.html';
+            updateView();
+            window.location.reload();
         });
+
+        // Profile Update Logic
+        document.getElementById('profile-update-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newName = document.getElementById('profile-input-name').value;
+            const user = getUser();
+            user.name = newName;
+            localStorage.setItem('pg_user', JSON.stringify(user));
+            
+            pushToDataLayer('profile_update', {
+                user_id: user.uid,
+                updated_fields: ['name']
+            });
+            
+            alert('Profile updated successfully.');
+            updateView();
+        });
+
+        // Logout
+        document.getElementById('btn-logout').onclick = () => {
+            logoutUser();
+        };
+
+        updateView();
     </script>
 </body>
 </html>
