@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>Shop | Prateek Gharat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; }</style>
+</head>
+<body class="bg-white">
+    <main class="max-w-7xl mx-auto px-4 py-16">
+        <div class="flex flex-col md:flex-row gap-16">
+            <aside class="w-full md:w-64 space-y-12">
+                <div>
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Categories</h3>
+                    <div class="space-y-4 text-sm" id="cat-filters">
+                        <a href="shop.html" class="block hover:font-bold">All Collections</a>
+                        <a href="shop.html?category=Men" class="block hover:font-bold">Men</a>
+                        <a href="shop.html?category=Women" class="block hover:font-bold">Women</a>
+                        <a href="shop.html?category=Kids" class="block hover:font-bold">Kids</a>
+                    </div>
+                </div>
+            </aside>
+            <div class="flex-1">
+                <h1 id="shop-title" class="text-4xl font-serif mb-12">All Collections</h1>
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+            </div>
+        </div>
+    </main>
+    <script type="module">
+        import { PRODUCTS } from './data.js';
+        import { initLayout } from './app.js';
+        initLayout();
+        
+        const params = new URLSearchParams(window.location.search);
+        const cat = params.get('category');
+        const grid = document.getElementById('product-grid');
+        const title = document.getElementById('shop-title');
+        
+        const filtered = cat ? PRODUCTS.filter(p => p.category === cat) : PRODUCTS;
+        title.innerText = cat ? `${cat} Collection` : 'All Collections';
+        
+        filtered.forEach(p => {
+            grid.innerHTML += `
+                <a href="product.html?id=${p.id}" class="group space-y-4">
+                    <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="">
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.category}</p>
+                        <h3 class="text-lg font-serif">${p.name}</h3>
+                        <p class="font-bold text-slate-900">$${p.price.toFixed(2)}</p>
+                    </div>
+                </a>
+            `;
+        });
+    </script>
+</body>
+</html>

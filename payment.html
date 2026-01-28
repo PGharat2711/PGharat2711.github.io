@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>Payment | Prateek Gharat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; }</style>
+</head>
+<body class="bg-slate-50/50">
+    <main class="max-w-7xl mx-auto px-4 py-16">
+        <div class="flex justify-center mb-16">
+            <div class="flex items-center gap-4">
+                <div class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center"><i class="fa-solid fa-check"></i></div>
+                    <span class="text-[10px] font-black uppercase tracking-widest mt-2 text-green-600">Delivery</span>
+                </div>
+                <div class="w-20 h-px bg-green-500 mb-6"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-sm shadow-xl shadow-black/20">2</div>
+                    <span class="text-[10px] font-black uppercase tracking-widest mt-2">Payment</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div class="lg:col-span-8 space-y-8">
+                <div id="ship-summary" class="bg-white p-8 border border-slate-200 rounded-xl shadow-sm"></div>
+                <div class="bg-white p-10 border border-slate-200 rounded-xl shadow-sm">
+                    <h1 class="text-3xl font-serif mb-10 font-semibold">Payment Details</h1>
+                    <form id="payment-form" class="space-y-8">
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Cardholder Name</label>
+                            <input required type="text" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Card Number</label>
+                            <input required type="text" placeholder="0000 0000 0000 0000" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30 font-mono">
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Expiry (MM/YY)</label>
+                                <input required type="text" placeholder="MM/YY" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-slate-400">CVV</label>
+                                <input required type="text" placeholder="123" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-black text-white py-6 font-bold uppercase tracking-[0.2em] hover:bg-slate-800 transition">Complete Purchase</button>
+                    </form>
+                </div>
+            </div>
+            <aside class="lg:col-span-4" id="order-summary-container"></aside>
+        </div>
+    </main>
+    <script type="module">
+        import { initLayout, getCart, saveCart } from './app.js';
+        import { pushToDataLayer } from './tracking.js';
+        initLayout();
+
+        const delivery = JSON.parse(localStorage.getItem('pg_delivery') || '{}');
+        const cart = getCart();
+        const total = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0) + 10;
+
+        document.getElementById('ship-summary').innerHTML = `
+            <div class="flex justify-between items-start">
+                <div class="space-y-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Shipping To</p>
+                    <p class="font-bold text-slate-900">${delivery.firstName} ${delivery.lastName}</p>
+                    <p class="text-sm text-slate-500">${delivery.address}, ${delivery.city}</p>
+                </div>
+                <a href="delivery.html" class="text-xs font-bold border-b border-black">Edit</a>
+            </div>
+        `;
+
+        document.getElementById('order-summary-container').innerHTML = `
+            <div class="bg-slate-900 text-white p-8 rounded-xl shadow-xl shadow-slate-200">
+                <h3 class="text-xl font-serif mb-8">Summary</h3>
+                <div class="space-y-3 pt-6 border-t border-white/10 text-sm">
+                    <div class="flex justify-between text-white/50"><span>Amount Paid</span><span>$${total.toFixed(2)}</span></div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('payment-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const orderId = 'PG-' + Math.floor(Math.random() * 900000 + 100000);
+            sessionStorage.setItem('pg_last_order', JSON.stringify({ items: cart, total, delivery, orderId }));
+            saveCart([]);
+            window.location.href = 'confirmation.html';
+        });
+    </script>
+</body>
+</html>

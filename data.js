@@ -1,0 +1,63 @@
+
+export const PRODUCTS = [
+  {
+    id: 'm1',
+    name: 'Classic Linen Shirt',
+    price: 89.99,
+    category: 'Men',
+    description: 'Breathable linen shirt perfect for summer evenings and professional settings.',
+    image: 'https://images.unsplash.com/photo-1594932224828-b4b057b69b6d?auto=format&fit=crop&q=80&w=800',
+    rating: 4.5,
+    reviews: 124
+  },
+  {
+    id: 'w1',
+    name: 'Floral Summer Dress',
+    price: 129.50,
+    category: 'Women',
+    description: 'Elegant floral patterns on a lightweight silk blend fabric.',
+    image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&q=80&w=800',
+    rating: 4.8,
+    reviews: 89
+  },
+  {
+    id: 'k1',
+    name: 'Cotton Play Set',
+    price: 45.00,
+    category: 'Kids',
+    description: 'Durable and soft organic cotton set for active toddlers.',
+    image: 'https://images.unsplash.com/photo-1519457431-7551af2d8efc?auto=format&fit=crop&q=80&w=800',
+    rating: 4.7,
+    reviews: 56
+  },
+  {
+    id: 'a1',
+    name: 'Minimalist Leather Watch',
+    price: 199.00,
+    category: 'Accessories',
+    description: 'Handcrafted leather strap with a timeless stainless steel case.',
+    image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=800',
+    rating: 4.9,
+    reviews: 210
+  },
+  {
+    id: 'm2',
+    name: 'Urban Cargo Pants',
+    price: 75.00,
+    category: 'Men',
+    description: 'Functional style for the modern city dweller.',
+    image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&q=80&w=800',
+    rating: 4.3,
+    reviews: 45
+  },
+  {
+    id: 'w2',
+    name: 'Evening Satin Gown',
+    price: 249.00,
+    category: 'Women',
+    description: 'Turn heads in this deep emerald green satin gown.',
+    image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=800',
+    rating: 4.9,
+    reviews: 32
+  }
+];

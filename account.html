@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>Account | Prateek Gharat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; }</style>
+</head>
+<body class="bg-white">
+    <main class="max-w-md mx-auto px-4 py-24 text-center space-y-12">
+        <h1 class="text-4xl font-serif">Sign In</h1>
+        <form id="login-form" class="space-y-6">
+            <input required id="login-email" type="email" placeholder="Email Address" class="w-full border border-slate-200 px-4 py-4 rounded-lg outline-none focus:border-black">
+            <input required type="password" placeholder="Password" class="w-full border border-slate-200 px-4 py-4 rounded-lg outline-none focus:border-black">
+            <button type="submit" class="w-full bg-black text-white py-5 font-bold uppercase tracking-widest hover:bg-slate-800 transition">Login</button>
+        </form>
+    </main>
+    <script type="module">
+        import { initLayout, pushToDataLayer } from './app.js';
+        initLayout();
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const user = { id: 'USR-' + Date.now(), name: email.split('@')[0], email };
+            localStorage.setItem('pg_user', JSON.stringify(user));
+            pushToDataLayer('login', { user_id: user.id });
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

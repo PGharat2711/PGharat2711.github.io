@@ -1,31 +1,70 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prateek Gharat | Luxury Retail</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prateek Gharat | Premium Fashion</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <style>
-      body { font-family: 'Inter', sans-serif; }
-      .font-serif { font-family: 'Playfair Display', serif; }
-    </style>
-    <script type="importmap">
-    {
-      "imports": {
-        "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-        "react/": "https://esm.sh/react@^19.2.4/",
-        "react": "https://esm.sh/react@^19.2.4",
-        "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0"
-      }
-    }
+    <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; }</style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0"
+  }
+}
+</script>
+</head>
+<body class="bg-white">
+    <header class="relative h-[80vh] overflow-hidden bg-slate-900">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=2000" class="absolute inset-0 w-full h-full object-cover opacity-70" alt="Hero">
+        <div class="relative h-full flex items-center justify-center text-center text-white px-4">
+            <div class="max-w-2xl space-y-6">
+                <span class="text-[10px] font-black uppercase tracking-[0.4em]">Spring Summer 2024</span>
+                <h1 class="text-6xl md:text-8xl font-serif">A Legacy of Style</h1>
+                <p class="text-lg opacity-80 max-w-md mx-auto">Discover minimalist silhouettes crafted from the finest organic textiles.</p>
+                <div class="pt-6">
+                    <a href="shop.html" class="inline-block bg-white text-black px-12 py-5 font-bold uppercase tracking-widest hover:bg-slate-100 transition">Explore Collection</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-20">
+        <div class="flex justify-between items-end mb-12">
+            <h2 class="text-4xl font-serif">Seasonal Picks</h2>
+            <a href="shop.html" class="text-sm font-bold border-b-2 border-black pb-1">Shop All</a>
+        </div>
+        <div id="featured-grid" class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Dynamically loaded -->
+        </div>
+    </main>
+
+    <script type="module">
+        import { PRODUCTS } from './data.js';
+        import { initLayout } from './app.js';
+        initLayout();
+        
+        const grid = document.getElementById('featured-grid');
+        PRODUCTS.slice(0, 4).forEach(p => {
+            grid.innerHTML += `
+                <a href="product.html?id=${p.id}" class="group space-y-4">
+                    <div class="aspect-[3/4] bg-slate-100 overflow-hidden">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="">
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.category}</p>
+                        <h3 class="text-lg font-serif">${p.name}</h3>
+                        <p class="font-bold text-slate-900">$${p.price.toFixed(2)}</p>
+                    </div>
+                </a>
+            `;
+        });
     </script>
-  </head>
-  <body class="text-slate-900 antialiased">
-    <div id="root"></div>
-  </body>
+</body>
 </html>

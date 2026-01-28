@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>Order Confirmed | Prateek Gharat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; }</style>
+</head>
+<body class="bg-white">
+    <main class="max-w-4xl mx-auto px-4 py-24 text-center space-y-10">
+        <div class="w-20 h-20 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto shadow-xl shadow-green-200">
+            <i class="fa-solid fa-check text-3xl"></i>
+        </div>
+        <div class="space-y-4">
+            <h1 class="text-5xl font-serif">Thank You for Your Order</h1>
+            <p id="order-id-label" class="text-sm font-bold uppercase tracking-widest text-slate-400"></p>
+        </div>
+        <div id="confirmation-details" class="bg-slate-50 border border-slate-100 p-10 rounded-xl text-left"></div>
+        <div class="pt-10">
+            <a href="shop.html" class="inline-block bg-black text-white px-12 py-5 font-bold uppercase tracking-widest hover:bg-slate-800 transition">Back to Store</a>
+        </div>
+    </main>
+    <script type="module">
+        import { initLayout } from './app.js';
+        import { trackPurchase } from './tracking.js';
+        initLayout();
+
+        const order = JSON.parse(sessionStorage.getItem('pg_last_order') || '{}');
+        if (order.orderId) {
+            trackPurchase(order);
+            document.getElementById('order-id-label').innerText = `Order ID: ${order.orderId}`;
+            document.getElementById('confirmation-details').innerHTML = `
+                <div class="grid grid-cols-2 gap-10">
+                    <div><h3 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Shipped To</h3><p class="font-bold">${order.delivery.firstName} ${order.delivery.lastName}</p><p class="text-sm text-slate-500">${order.delivery.address}</p></div>
+                    <div><h3 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">Payment Summary</h3><p class="text-2xl font-black">$${order.total.toFixed(2)}</p><p class="text-sm text-slate-500">Charged to Card</p></div>
+                </div>
+            `;
+        } else {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
