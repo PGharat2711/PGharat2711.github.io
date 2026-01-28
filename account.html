@@ -48,12 +48,21 @@
             
             localStorage.setItem('pg_user', JSON.stringify(user));
             
-            // Track login with the User ID
+            // Track login with enhanced parameters
+            // Following GA4 documentation + user requirements
             pushToDataLayer('login', { 
                 user_id: user.uid,
-                method: 'email' 
+                method: 'email',
+                timestamp: new Date().toISOString(),
+                event_status: 'success',
+                login_type: 'customer_portal'
             });
             
+            // Also set user_id globally for subsequent events in this session
+            pushToDataLayer('set_user_properties', {
+                user_id: user.uid
+            });
+
             window.location.href = 'index.html';
         });
     </script>
