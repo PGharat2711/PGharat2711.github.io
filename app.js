@@ -1,6 +1,9 @@
 
 import { pushToDataLayer } from './tracking.js';
 
+// Re-export for convenience in other pages
+export { pushToDataLayer };
+
 // State Management
 export const getCart = () => {
     const saved = localStorage.getItem('pg_cart');
@@ -34,7 +37,7 @@ export const getUser = () => {
 // Global Layout Injection
 export const initLayout = () => {
     const user = getUser();
-    const userName = user && user.name ? user.name.split(' ')[0] : 'Account';
+    const userName = (user && user.name) ? user.name.split(' ')[0] : 'Account';
     
     const navHTML = `
         <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
@@ -90,7 +93,6 @@ export const initLayout = () => {
         </footer>
     `;
 
-    // Avoid double injection
     if (!document.querySelector('nav')) {
         document.body.insertAdjacentHTML('afterbegin', navHTML);
     }
@@ -100,7 +102,6 @@ export const initLayout = () => {
     
     updateCartBadge();
 
-    // Generic Page View Tracking
     pushToDataLayer('page_view', {
         page_path: window.location.pathname,
         page_title: document.title,

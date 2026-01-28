@@ -15,15 +15,19 @@ export const pushToDataLayer = (event, payload) => {
 
 const mapProductToGA4Item = (product, index = 0, quantity = 1) => {
   return {
-    item_id: product.id,
+    item_id: String(product.id),
     item_name: product.name,
     affiliation: "Prateek Gharat Online Store",
     index: index,
-    item_brand: "Prateek Gharat",
+    item_brand: product.brand || "Prateek Gharat",
     item_category: product.category,
-    item_variant: "Standard",
-    price: product.price,
-    quantity: quantity
+    item_category2: product.category2 || "",
+    item_category3: product.category3 || "",
+    item_category4: product.category4 || "",
+    item_variant: product.variant || "Standard",
+    google_business_vertical: product.businessVertical || "retail",
+    price: parseFloat(product.price),
+    quantity: parseInt(quantity)
   };
 };
 
@@ -68,33 +72,33 @@ export const trackAddToCart = (product, quantity = 1) => {
 };
 
 export const trackViewCart = (cartItems) => {
-  const total = cartItems.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+  const totalValue = cartItems.reduce((acc, i) => acc + (i.price * i.quantity), 0);
   pushToDataLayer("view_cart", {
     ecommerce: {
       currency: "USD",
-      value: total,
+      value: totalValue,
       items: cartItems.map((i, idx) => mapProductToGA4Item(i, idx, i.quantity))
     }
   });
 };
 
 export const trackBeginCheckout = (cartItems) => {
-  const total = cartItems.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+  const totalValue = cartItems.reduce((acc, i) => acc + (i.price * i.quantity), 0);
   pushToDataLayer("begin_checkout", {
     ecommerce: {
       currency: "USD",
-      value: total,
+      value: totalValue,
       items: cartItems.map((i, idx) => mapProductToGA4Item(i, idx, i.quantity))
     }
   });
 };
 
 export const trackAddShippingInfo = (cartItems, shippingTier = "Standard") => {
-  const total = cartItems.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+  const totalValue = cartItems.reduce((acc, i) => acc + (i.price * i.quantity), 0);
   pushToDataLayer("add_shipping_info", {
     ecommerce: {
       currency: "USD",
-      value: total,
+      value: totalValue,
       shipping_tier: shippingTier,
       items: cartItems.map((i, idx) => mapProductToGA4Item(i, idx, i.quantity))
     }
@@ -102,11 +106,11 @@ export const trackAddShippingInfo = (cartItems, shippingTier = "Standard") => {
 };
 
 export const trackAddPaymentInfo = (cartItems, paymentType = "Credit Card") => {
-  const total = cartItems.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+  const totalValue = cartItems.reduce((acc, i) => acc + (i.price * i.quantity), 0);
   pushToDataLayer("add_payment_info", {
     ecommerce: {
       currency: "USD",
-      value: total,
+      value: totalValue,
       payment_type: paymentType,
       items: cartItems.map((i, idx) => mapProductToGA4Item(i, idx, i.quantity))
     }

@@ -1,11 +1,11 @@
 
-export type Category = 'Men' | 'Women' | 'Kids' | 'Accessories';
+// TypeScript types for the Prateek Gharat e-commerce application.
 
 export interface Product {
   id: string;
   name: string;
   price: number;
-  category: Category;
+  category: string;
   description: string;
   image: string;
   rating: number;
@@ -22,9 +22,4 @@ export interface User {
   email: string;
 }
 
-// DataLayer Window extension
-declare global {
-  interface Window {
-    dataLayer: any[];
-  }
-}
+export type Category = 'All' | 'Men' | 'Women' | 'Kids' | 'Accessories';

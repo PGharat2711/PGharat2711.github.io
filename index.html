@@ -13,9 +13,8 @@
 {
   "imports": {
     "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0"
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "react/": "https://esm.sh/react@^19.2.4/"
   }
 }
 </script>
@@ -53,36 +52,37 @@
         import { initLayout } from './app.js';
         import { trackViewItemList, trackSelectItem } from './tracking.js';
         
-        // Initialize global components and tracking
         initLayout();
         
         const grid = document.getElementById('featured-grid');
-        const featured = PRODUCTS.slice(0, 4);
-        
-        // GA4 Tracking: View Item List
-        trackViewItemList(featured, "Homepage Featured Grid");
+        if (grid) {
+            const featuredProducts = PRODUCTS.slice(0, 4);
+            
+            // GA4 Tracking: View Item List
+            trackViewItemList(featuredProducts, "Homepage Featured Grid");
 
-        featured.forEach((p, index) => {
-            const item = document.createElement('div');
-            item.className = "group space-y-4 cursor-pointer";
-            item.innerHTML = `
-                <div class="aspect-[3/4] bg-slate-50 overflow-hidden relative">
-                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000" alt="${p.name}">
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition duration-500"></div>
-                </div>
-                <div class="space-y-1">
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.category}</p>
-                    <h3 class="text-lg font-serif group-hover:underline decoration-1 underline-offset-4">${p.name}</h3>
-                    <p class="font-bold text-slate-900">$${p.price.toFixed(2)}</p>
-                </div>
-            `;
-            item.onclick = () => {
-                // GA4 Tracking: Select Item
-                trackSelectItem(p, index, "Homepage Featured Grid");
-                window.location.href = `product.html?id=${p.id}`;
-            };
-            grid.appendChild(item);
-        });
+            featuredProducts.forEach((p, index) => {
+                const item = document.createElement('div');
+                item.className = "group space-y-4 cursor-pointer";
+                item.innerHTML = `
+                    <div class="aspect-[3/4] bg-slate-50 overflow-hidden relative">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000" alt="${p.name}">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition duration-500"></div>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.category}</p>
+                        <h3 class="text-lg font-serif group-hover:underline decoration-1 underline-offset-4">${p.name}</h3>
+                        <p class="font-bold text-slate-900">$${p.price.toFixed(2)}</p>
+                    </div>
+                `;
+                item.onclick = () => {
+                    // GA4 Tracking: Select Item
+                    trackSelectItem(p, index, "Homepage Featured Grid");
+                    window.location.href = `product.html?id=${p.id}`;
+                };
+                grid.appendChild(item);
+            });
+        }
     </script>
 </body>
 </html>
