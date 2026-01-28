@@ -31,6 +31,7 @@
     <script type="module">
         import { PRODUCTS } from './data.js';
         import { initLayout } from './app.js';
+        import { trackViewItemList, trackSelectItem } from './tracking.js';
         initLayout();
         
         const params = new URLSearchParams(window.location.search);
@@ -39,21 +40,30 @@
         const title = document.getElementById('shop-title');
         
         const filtered = cat ? PRODUCTS.filter(p => p.category === cat) : PRODUCTS;
-        title.innerText = cat ? `${cat} Collection` : 'All Collections';
+        const listName = cat ? `${cat} Category` : "All Collections";
+        title.innerText = listName;
         
-        filtered.forEach(p => {
-            grid.innerHTML += `
-                <a href="product.html?id=${p.id}" class="group space-y-4">
-                    <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
-                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="">
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.category}</p>
-                        <h3 class="text-lg font-serif">${p.name}</h3>
-                        <p class="font-bold text-slate-900">$${p.price.toFixed(2)}</p>
-                    </div>
-                </a>
+        // Tracking: View Item List
+        trackViewItemList(filtered, listName);
+
+        filtered.forEach((p, index) => {
+            const item = document.createElement('div');
+            item.className = "group space-y-4 cursor-pointer";
+            item.innerHTML = `
+                <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
+                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="">
+                </div>
+                <div class="space-y-1">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.category}</p>
+                    <h3 class="text-lg font-serif">${p.name}</h3>
+                    <p class="font-bold text-slate-900">$${p.price.toFixed(2)}</p>
+                </div>
             `;
+            item.onclick = () => {
+                trackSelectItem(p, index, listName);
+                window.location.href = `product.html?id=${p.id}`;
+            };
+            grid.appendChild(item);
         });
     </script>
 </body>

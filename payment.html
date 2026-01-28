@@ -57,7 +57,7 @@
     </main>
     <script type="module">
         import { initLayout, getCart, saveCart } from './app.js';
-        import { pushToDataLayer } from './tracking.js';
+        import { trackAddPaymentInfo } from './tracking.js';
         initLayout();
 
         const delivery = JSON.parse(localStorage.getItem('pg_delivery') || '{}');
@@ -86,6 +86,10 @@
 
         document.getElementById('payment-form').addEventListener('submit', (e) => {
             e.preventDefault();
+            
+            // Tracking: Add Payment Info
+            trackAddPaymentInfo(cart, "Credit Card");
+
             const orderId = 'PG-' + Math.floor(Math.random() * 900000 + 100000);
             sessionStorage.setItem('pg_last_order', JSON.stringify({ items: cart, total, delivery, orderId }));
             saveCart([]);

@@ -17,6 +17,7 @@
     </main>
     <script type="module">
         import { initLayout, getCart, saveCart } from './app.js';
+        import { trackViewCart } from './tracking.js';
         initLayout();
 
         const cart = getCart();
@@ -25,6 +26,9 @@
         if (cart.length === 0) {
             container.innerHTML = `<div class="col-span-3 py-20 text-center space-y-6"><i class="fa-solid fa-shopping-bag text-6xl text-slate-100"></i><h2 class="text-2xl font-serif">Your bag is empty</h2><a href="shop.html" class="inline-block border-b-2 border-black font-bold pb-1">Start Shopping</a></div>`;
         } else {
+            // Tracking: View Cart
+            trackViewCart(cart);
+
             const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
             container.innerHTML = `
                 <div class="lg:col-span-2 space-y-8">

@@ -68,14 +68,15 @@
     </main>
     <script type="module">
         import { initLayout, getCart } from './app.js';
-        import { pushToDataLayer } from './tracking.js';
+        import { trackBeginCheckout, trackAddShippingInfo } from './tracking.js';
         initLayout();
 
         const cart = getCart();
         const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
         const total = subtotal + 10;
 
-        pushToDataLayer('begin_checkout', { ecommerce: { currency: 'USD', value: total, items: cart } });
+        // Tracking: Begin Checkout
+        trackBeginCheckout(cart);
 
         const summary = document.getElementById('order-summary-container');
         summary.innerHTML = `
@@ -96,7 +97,10 @@
             e.preventDefault();
             const data = new FormData(e.target);
             localStorage.setItem('pg_delivery', JSON.stringify(Object.fromEntries(data.entries())));
-            pushToDataLayer('add_shipping_info', { method: 'standard' });
+            
+            // Tracking: Add Shipping Info
+            trackAddShippingInfo(cart, "Standard Delivery");
+            
             window.location.href = 'payment.html';
         });
     </script>

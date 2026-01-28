@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prateek Gharat | Premium Fashion</title>
+    <title>Prateek Gharat | Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -26,44 +26,62 @@
         <div class="relative h-full flex items-center justify-center text-center text-white px-4">
             <div class="max-w-2xl space-y-6">
                 <span class="text-[10px] font-black uppercase tracking-[0.4em]">Spring Summer 2024</span>
-                <h1 class="text-6xl md:text-8xl font-serif">A Legacy of Style</h1>
-                <p class="text-lg opacity-80 max-w-md mx-auto">Discover minimalist silhouettes crafted from the finest organic textiles.</p>
+                <h1 class="text-6xl md:text-8xl font-serif leading-tight">A Legacy of Style</h1>
+                <p class="text-lg opacity-80 max-w-md mx-auto font-light">Minimalist silhouettes crafted from the finest organic textiles for the modern connoisseur.</p>
                 <div class="pt-6">
-                    <a href="shop.html" class="inline-block bg-white text-black px-12 py-5 font-bold uppercase tracking-widest hover:bg-slate-100 transition">Explore Collection</a>
+                    <a href="shop.html" class="inline-block bg-white text-black px-12 py-5 font-bold uppercase tracking-widest hover:bg-slate-100 transition active:scale-95">Explore Collection</a>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-20">
-        <div class="flex justify-between items-end mb-12">
-            <h2 class="text-4xl font-serif">Seasonal Picks</h2>
-            <a href="shop.html" class="text-sm font-bold border-b-2 border-black pb-1">Shop All</a>
+    <main class="max-w-7xl mx-auto px-4 py-24">
+        <div class="flex justify-between items-end mb-16">
+            <div>
+                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Curated for you</span>
+                <h2 class="text-4xl font-serif mt-2">Seasonal Picks</h2>
+            </div>
+            <a href="shop.html" class="text-sm font-bold border-b-2 border-black pb-1 hover:text-slate-500 hover:border-slate-500 transition">Shop All</a>
         </div>
-        <div id="featured-grid" class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <!-- Dynamically loaded -->
+        <div id="featured-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
+            <!-- Dynamically loaded products -->
         </div>
     </main>
 
     <script type="module">
         import { PRODUCTS } from './data.js';
         import { initLayout } from './app.js';
+        import { trackViewItemList, trackSelectItem } from './tracking.js';
+        
+        // Initialize global components and tracking
         initLayout();
         
         const grid = document.getElementById('featured-grid');
-        PRODUCTS.slice(0, 4).forEach(p => {
-            grid.innerHTML += `
-                <a href="product.html?id=${p.id}" class="group space-y-4">
-                    <div class="aspect-[3/4] bg-slate-100 overflow-hidden">
-                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="">
-                    </div>
-                    <div class="space-y-1">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.category}</p>
-                        <h3 class="text-lg font-serif">${p.name}</h3>
-                        <p class="font-bold text-slate-900">$${p.price.toFixed(2)}</p>
-                    </div>
-                </a>
+        const featured = PRODUCTS.slice(0, 4);
+        
+        // GA4 Tracking: View Item List
+        trackViewItemList(featured, "Homepage Featured Grid");
+
+        featured.forEach((p, index) => {
+            const item = document.createElement('div');
+            item.className = "group space-y-4 cursor-pointer";
+            item.innerHTML = `
+                <div class="aspect-[3/4] bg-slate-50 overflow-hidden relative">
+                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000" alt="${p.name}">
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition duration-500"></div>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.category}</p>
+                    <h3 class="text-lg font-serif group-hover:underline decoration-1 underline-offset-4">${p.name}</h3>
+                    <p class="font-bold text-slate-900">$${p.price.toFixed(2)}</p>
+                </div>
             `;
+            item.onclick = () => {
+                // GA4 Tracking: Select Item
+                trackSelectItem(p, index, "Homepage Featured Grid");
+                window.location.href = `product.html?id=${p.id}`;
+            };
+            grid.appendChild(item);
         });
     </script>
 </body>
