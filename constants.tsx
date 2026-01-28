@@ -8,7 +8,7 @@ export const PRODUCTS: Product[] = [
     price: 89.99,
     category: 'Men',
     description: 'Breathable linen shirt perfect for summer evenings and professional settings.',
-    image: 'https://images.unsplash.com/photo-1594932224828-b4b057b69b6d?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1598033129183-c4f50c7176c8?auto=format&fit=crop&q=80&w=800',
     rating: 4.5,
     reviews: 124
   },
@@ -28,7 +28,7 @@ export const PRODUCTS: Product[] = [
     price: 45.00,
     category: 'Kids',
     description: 'Durable and soft organic cotton set for active toddlers.',
-    image: 'https://images.unsplash.com/photo-1519457431-7551af2d8efc?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?auto=format&fit=crop&q=80&w=800',
     rating: 4.7,
     reviews: 56
   },
