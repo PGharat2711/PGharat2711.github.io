@@ -2,13 +2,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Tag Manager -->
+    <script>
+        (function() {
+            const user = JSON.parse(localStorage.getItem('pg_user') || 'null');
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'content_type': 'ecommerce',
+                'content_group': 'cart',
+                'page_category': 'Shopping',
+                'page_subcategory': 'Bag',
+                'page_type': 'cart',
+                'navigation_path': window.location.pathname,
+                'login_status': user ? 'logged_in' : 'logged_out',
+                'user_id': user ? user.uid : null,
+                'customer_segment': user ? 'fashion_enthusiast' : 'guest',
+                'loyalty_tier': user ? 'Gold' : 'none',
+                'language': navigator.language || 'en-US',
+                'country': 'US',
+                'site_version': '1.2.0'
+            });
+        })();
+    </script>
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-WPBC6CXZ');</script>
-    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <title>Your Bag | Prateek Gharat</title>
@@ -18,69 +37,25 @@
     <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; }</style>
 </head>
 <body class="bg-white">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPBC6CXZ"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPBC6CXZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <main class="max-w-7xl mx-auto px-4 py-16">
         <h1 class="text-4xl font-serif mb-12">Shopping Bag</h1>
-        <div id="cart-content" class="grid grid-cols-1 lg:grid-cols-3 gap-16">
-            <!-- Dynamically loaded -->
-        </div>
+        <div id="cart-content" class="grid grid-cols-1 lg:grid-cols-3 gap-16"></div>
     </main>
     <script type="module">
         import { initLayout, getCart, saveCart } from './app.js';
         import { trackViewCart } from './tracking.js';
         initLayout();
-
         const cart = getCart();
         const container = document.getElementById('cart-content');
-
         if (cart.length === 0) {
             container.innerHTML = `<div class="col-span-3 py-20 text-center space-y-6"><i class="fa-solid fa-shopping-bag text-6xl text-slate-100"></i><h2 class="text-2xl font-serif">Your bag is empty</h2><a href="shop.html" class="inline-block border-b-2 border-black font-bold pb-1">Start Shopping</a></div>`;
         } else {
-            // Tracking: View Cart
             trackViewCart(cart);
-
             const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
             container.innerHTML = `
-                <div class="lg:col-span-2 space-y-8">
-                    ${cart.map(i => `
-                        <div class="flex gap-6 pb-8 border-b border-slate-100">
-                            <div class="w-24 h-32 bg-slate-50"><img src="${i.image}" class="w-full h-full object-cover"></div>
-                            <div class="flex-1 flex justify-between">
-                                <div>
-                                    <h3 class="font-serif text-xl">${i.name}</h3>
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${i.category} / ${i.category2}</p>
-                                    <p class="text-xs text-slate-500 mt-1">Variant: ${i.variant}</p>
-                                </div>
-                                <div class="text-right flex flex-col justify-between">
-                                    <p class="font-bold text-lg">$${(i.price * i.quantity).toFixed(2)}</p>
-                                    <p class="text-[10px] text-slate-400">Qty: ${i.quantity}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                <aside class="bg-slate-50 p-8 rounded-xl h-fit space-y-8">
-                    <h3 class="text-xl font-serif border-b pb-4">Summary</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between text-sm text-slate-500">
-                            <span>Subtotal</span>
-                            <span>$${subtotal.toFixed(2)}</span>
-                        </div>
-                        <div class="flex justify-between text-sm text-slate-500">
-                            <span>Estimated Shipping</span>
-                            <span>$10.00</span>
-                        </div>
-                        <div class="flex justify-between font-black text-2xl pt-4 border-t border-slate-200">
-                            <span>Total</span>
-                            <span>$${(subtotal + 10).toFixed(2)}</span>
-                        </div>
-                    </div>
-                    <a href="delivery.html" class="block w-full bg-black text-white py-5 text-center font-bold uppercase tracking-widest hover:bg-slate-800 transition">Checkout Now</a>
-                </aside>
-            `;
+                <div class="lg:col-span-2 space-y-8">${cart.map(i => `<div class="flex gap-6 pb-8 border-b border-slate-100"><div class="w-24 h-32 bg-slate-50"><img src="${i.image}" class="w-full h-full object-cover"></div><div class="flex-1 flex justify-between"><div><h3 class="font-serif text-xl">${i.name}</h3><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${i.category}</p></div><div class="text-right flex flex-col justify-between"><p class="font-bold text-lg">$${(i.price * i.quantity).toFixed(2)}</p><p class="text-[10px] text-slate-400">Qty: ${i.quantity}</p></div></div></div>`).join('')}</div>
+                <aside class="bg-slate-50 p-8 rounded-xl h-fit space-y-8"><h3 class="text-xl font-serif border-b pb-4">Summary</h3><div class="space-y-4"><div class="flex justify-between text-sm text-slate-500"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div><div class="flex justify-between font-black text-2xl pt-4 border-t border-slate-200"><span>Total</span><span>$${(subtotal + 10).toFixed(2)}</span></div></div><a href="delivery.html" class="block w-full bg-black text-white py-5 text-center font-bold uppercase tracking-widest hover:bg-slate-800 transition">Checkout Now</a></aside>`;
         }
     </script>
 </body>

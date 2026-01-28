@@ -2,13 +2,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Tag Manager -->
+    <script>
+        (function() {
+            const user = JSON.parse(localStorage.getItem('pg_user') || 'null');
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'content_type': 'ecommerce_checkout',
+                'content_group': 'checkout',
+                'page_category': 'Checkout',
+                'page_subcategory': 'Delivery',
+                'page_type': 'checkout_delivery',
+                'navigation_path': window.location.pathname,
+                'login_status': user ? 'logged_in' : 'logged_out',
+                'user_id': user ? user.uid : null,
+                'customer_segment': user ? 'fashion_enthusiast' : 'guest',
+                'loyalty_tier': user ? 'Gold' : 'none',
+                'site_version': '1.2.0'
+            });
+        })();
+    </script>
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-WPBC6CXZ');</script>
-    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <title>Delivery | Prateek Gharat</title>
@@ -18,102 +35,43 @@
     <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; }</style>
 </head>
 <body class="bg-slate-50/50">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPBC6CXZ"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPBC6CXZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <main class="max-w-7xl mx-auto px-4 py-16">
         <div class="flex justify-center mb-16">
             <div class="flex items-center gap-4">
-                <div class="flex flex-col items-center">
-                    <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-sm">1</div>
-                    <span class="text-[10px] font-black uppercase tracking-widest mt-2">Delivery</span>
-                </div>
+                <div class="flex flex-col items-center"><div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-sm">1</div><span class="text-[10px] font-black uppercase tracking-widest mt-2">Delivery</span></div>
                 <div class="w-20 h-px bg-slate-200 mb-6"></div>
-                <div class="flex flex-col items-center opacity-30">
-                    <div class="w-10 h-10 rounded-full border border-slate-300 bg-white text-slate-500 flex items-center justify-center font-bold text-sm">2</div>
-                    <span class="text-[10px] font-black uppercase tracking-widest mt-2">Payment</span>
-                </div>
+                <div class="flex flex-col items-center opacity-30"><div class="w-10 h-10 rounded-full border border-slate-300 bg-white text-slate-500 flex items-center justify-center font-bold text-sm">2</div><span class="text-[10px] font-black uppercase tracking-widest mt-2">Payment</span></div>
             </div>
         </div>
-
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            <div class="lg:col-span-8 bg-white p-10 border border-slate-200 rounded-xl shadow-sm">
+            <div class="lg:col-span-8 bg-white p-10 border rounded-xl shadow-sm">
                 <h1 class="text-3xl font-serif mb-10 font-semibold">Shipping Address</h1>
                 <form id="delivery-form" class="space-y-8">
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">First Name</label>
-                            <input required name="firstName" type="text" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Last Name</label>
-                            <input required name="lastName" type="text" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30">
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Email Address</label>
-                        <input required name="email" type="email" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Full Street Address</label>
-                        <input required name="address" type="text" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30">
-                    </div>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">City</label>
-                            <input required name="city" type="text" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Zip Code</label>
-                            <input required name="zip" type="text" class="w-full border border-slate-200 px-4 py-4 rounded-lg focus:border-black outline-none transition bg-slate-50/30">
-                        </div>
-                    </div>
-                    <div class="pt-8 border-t border-slate-100">
-                        <button type="submit" class="w-full bg-black text-white py-6 font-bold uppercase tracking-[0.2em] hover:bg-slate-800 transition shadow-xl shadow-black/10">
-                            Continue to Payment
-                        </button>
-                    </div>
+                    <div class="grid grid-cols-2 gap-6"><input required name="firstName" placeholder="First Name" class="border p-4 rounded-lg"><input required name="lastName" placeholder="Last Name" class="border p-4 rounded-lg"></div>
+                    <input required name="email" type="email" placeholder="Email" class="w-full border p-4 rounded-lg">
+                    <input required name="address" placeholder="Street Address" class="w-full border p-4 rounded-lg">
+                    <div class="grid grid-cols-2 gap-6"><input required name="city" placeholder="City" class="border p-4 rounded-lg"><input required name="zip" placeholder="Zip" class="border p-4 rounded-lg"></div>
+                    <button type="submit" class="w-full bg-black text-white py-6 font-bold uppercase tracking-widest">Continue to Payment</button>
                 </form>
             </div>
-            <aside class="lg:col-span-4 space-y-6" id="order-summary-container"></aside>
+            <aside class="lg:col-span-4" id="order-summary-container"></aside>
         </div>
     </main>
     <script type="module">
         import { initLayout, getCart } from './app.js';
         import { trackBeginCheckout, trackAddShippingInfo } from './tracking.js';
         initLayout();
-
         const cart = getCart();
-        const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-        const total = subtotal + 10;
-
-        // Tracking: Begin Checkout
+        const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
         trackBeginCheckout(cart);
-
-        const summary = document.getElementById('order-summary-container');
-        summary.innerHTML = `
-            <div class="bg-slate-900 text-white p-8 rounded-xl shadow-xl shadow-slate-200">
-                <h3 class="text-xl font-serif mb-8 border-b border-white/10 pb-4">Your Order</h3>
-                <div class="space-y-6 mb-8 max-h-60 overflow-y-auto pr-2">
-                    ${cart.map(i => `<div class="flex justify-between text-sm text-white/60"><span>${i.name} x${i.quantity}</span><span class="text-white">$${(i.price * i.quantity).toFixed(2)}</span></div>`).join('')}
-                </div>
-                <div class="space-y-4 pt-6 border-t border-white/10 text-sm">
-                    <div class="flex justify-between text-white/50"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
-                    <div class="flex justify-between text-white/50"><span>Shipping</span><span>$10.00</span></div>
-                    <div class="flex justify-between font-black text-2xl pt-6 text-white border-t border-white/10 mt-4"><span>Total</span><span>$${total.toFixed(2)}</span></div>
-                </div>
-            </div>
-        `;
-
+        document.getElementById('order-summary-container').innerHTML = `
+            <div class="bg-slate-900 text-white p-8 rounded-xl"><h3 class="text-xl font-serif mb-8 border-b border-white/10 pb-4">Your Order</h3><div class="space-y-4 mb-8">${cart.map(i => `<div class="flex justify-between text-sm"><span>${i.name} x${i.quantity}</span><span>$${(i.price * i.quantity).toFixed(2)}</span></div>`).join('')}</div><div class="border-t border-white/10 pt-4"><div class="flex justify-between font-black text-2xl"><span>Total</span><span>$${(subtotal + 10).toFixed(2)}</span></div></div></div>`;
         document.getElementById('delivery-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const data = new FormData(e.target);
             localStorage.setItem('pg_delivery', JSON.stringify(Object.fromEntries(data.entries())));
-            
-            // Tracking: Add Shipping Info
             trackAddShippingInfo(cart, "Standard Delivery");
-            
             window.location.href = 'payment.html';
         });
     </script>

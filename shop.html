@@ -2,13 +2,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Tag Manager -->
+    <script>
+        (function() {
+            const user = JSON.parse(localStorage.getItem('pg_user') || 'null');
+            const params = new URLSearchParams(window.location.search);
+            const cat = params.get('category') || 'All';
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'content_type': 'ecommerce',
+                'content_group': cat.toLowerCase(),
+                'page_category': 'Shop',
+                'page_subcategory': cat,
+                'page_type': 'listing',
+                'navigation_path': window.location.pathname,
+                'login_status': user ? 'logged_in' : 'logged_out',
+                'user_id': user ? user.uid : null,
+                'customer_segment': user ? 'fashion_enthusiast' : 'guest',
+                'loyalty_tier': user ? 'Gold' : 'none',
+                'language': navigator.language || 'en-US',
+                'country': 'US',
+                'device_type': /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+                'site_version': '1.2.0'
+            });
+        })();
+    </script>
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-WPBC6CXZ');</script>
-    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <title>Shop | Prateek Gharat</title>
@@ -18,10 +40,7 @@
     <style>body { font-family: 'Inter', sans-serif; } .font-serif { font-family: 'Playfair Display', serif; }</style>
 </head>
 <body class="bg-white">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPBC6CXZ"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPBC6CXZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <main class="max-w-7xl mx-auto px-4 py-16">
         <div class="flex flex-col md:flex-row gap-16">
             <aside class="w-full md:w-64 space-y-12">
@@ -46,19 +65,14 @@
         import { initLayout } from './app.js';
         import { trackViewItemList, trackSelectItem } from './tracking.js';
         initLayout();
-        
         const params = new URLSearchParams(window.location.search);
         const cat = params.get('category');
         const grid = document.getElementById('product-grid');
         const title = document.getElementById('shop-title');
-        
         const filtered = cat ? PRODUCTS.filter(p => p.category === cat) : PRODUCTS;
         const listName = cat ? `${cat} Category` : "All Collections";
         title.innerText = listName;
-        
-        // Tracking: View Item List
         trackViewItemList(filtered, listName);
-
         filtered.forEach((p, index) => {
             const item = document.createElement('div');
             item.className = "group space-y-4 cursor-pointer";

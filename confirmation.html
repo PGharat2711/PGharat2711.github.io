@@ -2,6 +2,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Metadata DataLayer (Loads before GTM) -->
+    <script>
+        (function() {
+            const user = JSON.parse(localStorage.getItem('pg_user') || 'null');
+            const order = JSON.parse(sessionStorage.getItem('pg_last_order') || '{}');
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'content_type': 'ecommerce_confirmation',
+                'content_group': 'checkout',
+                'page_category': 'Checkout',
+                'page_subcategory': 'Thank You',
+                'page_type': 'confirmation',
+                'navigation_path': window.location.pathname,
+                'login_status': user ? 'logged_in' : 'logged_out',
+                'user_id': user ? user.uid : null,
+                'customer_segment': user ? 'fashion_enthusiast' : 'guest',
+                'loyalty_tier': user ? 'Gold' : 'none',
+                'language': navigator.language || 'en-US',
+                'country': 'US',
+                'transaction_id': order.orderId || null,
+                'site_version': '1.2.0'
+            });
+        })();
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -21,17 +45,13 @@
         .font-serif { font-family: 'Playfair Display', serif; }
         @media print {
             nav, footer, .no-print { display: none !important; }
-            .print-only { display: block !important; }
             body { background: white !important; padding: 0 !important; }
             main { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
         }
     </style>
 </head>
 <body class="bg-slate-50">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPBC6CXZ"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPBC6CXZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <main class="max-w-6xl mx-auto px-4 py-12 md:py-24">
         <!-- Success Header -->
@@ -40,129 +60,69 @@
                 <i class="fa-solid fa-check text-4xl"></i>
             </div>
             <div class="space-y-2">
-                <h1 class="text-4xl md:text-6xl font-serif">Thank you for your order.</h1>
-                <p class="text-slate-500 text-lg max-w-lg mx-auto">We've received your request and we're getting it ready for shipment.</p>
+                <h1 class="text-4xl md:text-6xl font-serif">Order Confirmed</h1>
+                <p class="text-slate-500 text-lg max-w-lg mx-auto">Thank you for choosing Prateek Gharat. We are preparing your legacy pieces.</p>
             </div>
             <div class="flex justify-center gap-4 pt-4">
                 <button onclick="window.print()" class="px-6 py-3 border border-slate-200 bg-white rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-slate-50 transition flex items-center gap-2">
                     <i class="fa-solid fa-print"></i> Print Receipt
                 </button>
                 <a href="shop.html" class="px-6 py-3 bg-black text-white rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-slate-800 transition flex items-center gap-2">
-                    Continue Shopping <i class="fa-solid fa-arrow-right"></i>
+                    Shop More <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-            <!-- Left Column: Order Summary & Status -->
+            <!-- Left Column: Order Summary -->
             <div class="lg:col-span-2 space-y-8">
                 <!-- Status Tracker -->
                 <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm no-print">
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-8">Order Status</h3>
-                    <div class="relative">
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-8">Current Stage</h3>
+                    <div class="relative flex justify-between">
                         <div class="absolute top-5 left-0 w-full h-0.5 bg-slate-100"></div>
                         <div class="absolute top-5 left-0 w-1/4 h-0.5 bg-black"></div>
-                        <div class="relative flex justify-between">
-                            <div class="flex flex-col items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm z-10"><i class="fa-solid fa-receipt"></i></div>
-                                <span class="text-[10px] font-bold uppercase tracking-widest">Ordered</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-3 opacity-30">
-                                <div class="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center text-sm z-10"><i class="fa-solid fa-box-open"></i></div>
-                                <span class="text-[10px] font-bold uppercase tracking-widest">Processing</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-3 opacity-30">
-                                <div class="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center text-sm z-10"><i class="fa-solid fa-truck-fast"></i></div>
-                                <span class="text-[10px] font-bold uppercase tracking-widest">Shipped</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-3 opacity-30">
-                                <div class="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center text-sm z-10"><i class="fa-solid fa-house-chimney"></i></div>
-                                <span class="text-[10px] font-bold uppercase tracking-widest">Delivered</span>
-                            </div>
-                        </div>
+                        <div class="relative flex flex-col items-center gap-2"><div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm"><i class="fa-solid fa-receipt"></i></div><span class="text-[10px] font-bold uppercase">Ordered</span></div>
+                        <div class="relative flex flex-col items-center gap-2 opacity-30"><div class="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center text-sm"><i class="fa-solid fa-box"></i></div><span class="text-[10px] font-bold uppercase">Processing</span></div>
+                        <div class="relative flex flex-col items-center gap-2 opacity-30"><div class="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center text-sm"><i class="fa-solid fa-truck"></i></div><span class="text-[10px] font-bold uppercase">Shipped</span></div>
+                        <div class="relative flex flex-col items-center gap-2 opacity-30"><div class="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 flex items-center justify-center text-sm"><i class="fa-solid fa-house"></i></div><span class="text-[10px] font-bold uppercase">Delivered</span></div>
                     </div>
                 </div>
 
-                <!-- Itemized Receipt -->
+                <!-- Receipt -->
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="bg-slate-50 px-8 py-4 border-b border-slate-100 flex justify-between items-center">
                         <span id="order-id-display" class="text-xs font-bold tracking-widest uppercase">Order #-------</span>
-                        <span id="order-date-display" class="text-[10px] text-slate-400 uppercase tracking-widest">Date: ---</span>
+                        <span id="order-date-display" class="text-[10px] text-slate-400 uppercase tracking-widest">---</span>
                     </div>
                     <div class="p-8">
-                        <div id="order-items-list" class="divide-y divide-slate-100">
-                            <!-- Items will be injected here -->
-                        </div>
-                        
-                        <!-- Financial Breakdown -->
+                        <div id="order-items-list" class="divide-y divide-slate-100"></div>
                         <div class="mt-8 pt-8 border-t border-slate-100 space-y-4">
-                            <div class="flex justify-between text-sm text-slate-500">
-                                <span>Subtotal</span>
-                                <span id="summary-subtotal">$0.00</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-slate-500">
-                                <span>Shipping (Express)</span>
-                                <span>$10.00</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-slate-500">
-                                <span>Estimated Tax (10%)</span>
-                                <span id="summary-tax">$0.00</span>
-                            </div>
-                            <div class="flex justify-between text-2xl font-black pt-4 border-t-2 border-slate-900">
-                                <span>Total Amount</span>
-                                <span id="summary-total">$0.00</span>
-                            </div>
+                            <div class="flex justify-between text-sm text-slate-500"><span>Subtotal</span><span id="summary-subtotal">$0.00</span></div>
+                            <div class="flex justify-between text-sm text-slate-500"><span>Shipping</span><span>$10.00</span></div>
+                            <div class="flex justify-between text-sm text-slate-500"><span>Tax (10%)</span><span id="summary-tax">$0.00</span></div>
+                            <div class="flex justify-between text-2xl font-black pt-4 border-t-2 border-slate-900"><span>Total</span><span id="summary-total">$0.00</span></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Column: Shipping & Payment Details -->
+            <!-- Right Column -->
             <div class="space-y-8">
-                <!-- Shipping Details -->
                 <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
                     <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Shipping Details</h3>
-                    <div id="shipping-info-display" class="space-y-4">
-                        <div class="flex items-start gap-4">
-                            <i class="fa-solid fa-location-dot mt-1 text-slate-300"></i>
-                            <div class="text-sm">
-                                <p id="ship-name" class="font-bold text-slate-900">---</p>
-                                <p id="ship-address" class="text-slate-500 leading-relaxed">---</p>
-                                <p id="ship-city-zip" class="text-slate-500">---</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4 text-sm">
-                            <i class="fa-solid fa-truck mt-1 text-slate-300"></i>
-                            <p class="text-slate-500">Expected Delivery: <span class="font-bold text-black" id="est-delivery-date">---</span></p>
-                        </div>
+                    <div class="text-sm space-y-2">
+                        <p id="ship-name" class="font-bold">---</p>
+                        <p id="ship-address" class="text-slate-500 leading-relaxed">---</p>
+                        <p id="ship-city-zip" class="text-slate-500">---</p>
                     </div>
                 </div>
-
-                <!-- Payment Method -->
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Payment Method</h3>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-8 bg-slate-100 rounded flex items-center justify-center">
-                            <i class="fa-brands fa-cc-visa text-slate-400 text-xl"></i>
-                        </div>
-                        <div class="text-sm">
-                            <p class="font-bold text-slate-900">Visa ending in ****</p>
-                            <p id="bill-email" class="text-[10px] text-slate-400 uppercase tracking-widest">---</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Support Section -->
-                <div class="bg-slate-900 text-white p-8 rounded-2xl shadow-xl shadow-slate-200 space-y-6 no-print">
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Need Assistance?</h3>
-                    <p class="text-sm text-white/60 leading-relaxed">Our concierge team is available 24/7 to assist with your order.</p>
+                <div class="bg-slate-900 text-white p-8 rounded-2xl shadow-xl space-y-6 no-print">
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Support</h3>
+                    <p class="text-sm text-white/60 leading-relaxed">Need help with your order? Our concierge is ready.</p>
                     <div class="space-y-3">
-                        <a href="mailto:support@prateekgharat.com" class="flex items-center gap-3 text-xs font-bold hover:text-white/80 transition">
-                            <i class="fa-solid fa-envelope"></i> support@prateekgharat.com
-                        </a>
-                        <div class="flex items-center gap-3 text-xs font-bold">
-                            <i class="fa-solid fa-phone"></i> +1 (800) GHARAT-01
-                        </div>
+                        <a href="mailto:support@prateekgharat.com" class="flex items-center gap-3 text-xs font-bold hover:text-white/80 transition"><i class="fa-solid fa-envelope"></i> support@prateekgharat.com</a>
+                        <div class="flex items-center gap-3 text-xs font-bold"><i class="fa-solid fa-phone"></i> +1 (800) GHARAT-01</div>
                     </div>
                 </div>
             </div>
@@ -173,60 +133,21 @@
         import { initLayout } from './app.js';
         import { trackPurchase } from './tracking.js';
         initLayout();
-
         const order = JSON.parse(sessionStorage.getItem('pg_last_order') || '{}');
-        
         if (order.orderId) {
-            // Track GA4 Purchase Event
             trackPurchase(order);
-
-            // Set Order Metadata
             document.getElementById('order-id-display').innerText = `Order #${order.orderId}`;
-            const now = new Date();
-            document.getElementById('order-date-display').innerText = `Date: ${now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
-            
-            // Set Delivery Estimate (7 days from now)
-            const estDate = new Date();
-            estDate.setDate(now.getDate() + 7);
-            document.getElementById('est-delivery-date').innerText = estDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-
-            // Set Financials
+            document.getElementById('order-date-display').innerText = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
             const subtotal = order.items.reduce((acc, i) => acc + (i.price * i.quantity), 0);
             const tax = subtotal * 0.1;
             document.getElementById('summary-subtotal').innerText = `$${subtotal.toFixed(2)}`;
             document.getElementById('summary-tax').innerText = `$${tax.toFixed(2)}`;
             document.getElementById('summary-total').innerText = `$${order.total.toFixed(2)}`;
-
-            // Set Customer Info
             document.getElementById('ship-name').innerText = `${order.delivery.firstName} ${order.delivery.lastName}`;
             document.getElementById('ship-address').innerText = order.delivery.address;
             document.getElementById('ship-city-zip').innerText = `${order.delivery.city}, ${order.delivery.zip}`;
-            document.getElementById('bill-email').innerText = order.delivery.email;
-
-            // Render Items
-            const itemsList = document.getElementById('order-items-list');
-            itemsList.innerHTML = order.items.map(item => `
-                <div class="flex gap-6 py-6">
-                    <div class="w-20 h-24 bg-slate-50 flex-shrink-0 rounded-lg overflow-hidden">
-                        <img src="${item.image}" class="w-full h-full object-cover" alt="${item.name}">
-                    </div>
-                    <div class="flex-1 flex flex-col justify-center">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h4 class="font-serif text-lg text-slate-900">${item.name}</h4>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${item.category} / ${item.variant}</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-bold text-slate-900">$${(item.price * item.quantity).toFixed(2)}</p>
-                                <p class="text-[10px] text-slate-400 uppercase font-black">Qty: ${item.quantity}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
+            document.getElementById('order-items-list').innerHTML = order.items.map(item => `<div class="flex gap-6 py-6"><div class="w-16 h-20 bg-slate-50 rounded overflow-hidden"><img src="${item.image}" class="w-full h-full object-cover"></div><div class="flex-1 flex justify-between items-center"><div><h4 class="font-serif text-slate-900">${item.name}</h4><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Qty: ${item.quantity}</p></div><p class="font-bold text-slate-900">$${(item.price * item.quantity).toFixed(2)}</p></div></div>`).join('');
         } else {
-            // If no order data exists, redirect to home
             window.location.href = 'index.html';
         }
     </script>
