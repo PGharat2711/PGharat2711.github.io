@@ -140,6 +140,7 @@ export const trackSignUp = (user, method = 'email') => {
 };
 
 export const trackLogout = (userId) => {
+  // Pass the ID of the user who is logging out
   pushToDataLayer("logout", {
     user_id: userId,
     timestamp: new Date().toISOString()

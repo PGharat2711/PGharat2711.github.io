@@ -52,9 +52,18 @@ export const getUser = () => {
 export const logoutUser = () => {
     const user = getUser();
     if (user) {
+        // Track the logout event with the current user ID
         trackLogout(user.uid);
     }
+    
+    // Clear user from storage
     localStorage.removeItem('pg_user');
+    
+    // Immediately set user_id to null in dataLayer for subsequent hits
+    pushToDataLayer('set_user_properties', {
+        user_id: null
+    });
+    
     window.location.href = 'index.html';
 };
 
@@ -130,10 +139,10 @@ export const initLayout = () => {
 
     updateCartBadge();
 
-    // Include user_id in the page_view if user is logged in
+    // Include user_id in the page_view. Pass null if the user is not logged in.
     pushToDataLayer('page_view', {
         page_path: window.location.pathname,
         page_title: document.title,
-        user_id: user ? user.uid : 'anonymous'
+        user_id: user ? user.uid : null
     });
 };
