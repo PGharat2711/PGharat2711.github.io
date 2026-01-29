@@ -2,12 +2,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Consent Mode v2 -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'default_consent',
+        ad_storage: 'denied',
+        analytics_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
+      (function() {
+        const stored = localStorage.getItem('consent_status');
+        if (stored) {
+          const consent = JSON.parse(stored);
+          window.dataLayer.push({
+            event: 'update_consent',
+            analytics_storage: consent.analytics ? 'granted' : 'denied',
+            ad_storage: consent.ads ? 'granted' : 'denied',
+            ad_user_data: consent.ads ? 'granted' : 'denied',
+            ad_personalization: consent.ads ? 'granted' : 'denied'
+          });
+        }
+      })();
+    </script>
+
+    <!-- Metadata DataLayer -->
     <script>
         (function() {
             const user = JSON.parse(localStorage.getItem('pg_user') || 'null');
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id') || 'unknown';
-            window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
                 'content_type': 'product',
                 'content_group': 'fashion',

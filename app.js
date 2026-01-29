@@ -67,6 +67,88 @@ export const logoutUser = () => {
     window.location.href = 'index.html';
 };
 
+/**
+ * Consent Mode v2 UI and Logic
+ */
+export const initConsentBanner = () => {
+    if (localStorage.getItem('consent_status')) return;
+
+    const banner = document.createElement('div');
+    banner.id = 'consent-banner';
+    banner.className = 'fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-slate-200 p-6 md:p-10 shadow-[0_-20px_50px_-15px_rgba(0,0,0,0.1)]';
+    banner.innerHTML = `
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+            <div class="space-y-3 max-w-3xl">
+                <h4 class="font-serif text-2xl text-slate-900">Legacy of Privacy</h4>
+                <p class="text-sm text-slate-500 leading-relaxed">
+                    We use cookies to curate a personalized shopping experience and analyze our traffic. 
+                    Choose which categories of cookies you allow us to use for your journey.
+                </p>
+                <div class="flex flex-wrap gap-6 pt-4">
+                    <label class="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] cursor-pointer group">
+                        <input type="checkbox" id="analytics-consent" checked class="w-5 h-5 accent-black border-slate-200 rounded">
+                        <span class="group-hover:text-black text-slate-400 transition">Performance & Analytics</span>
+                    </label>
+                    <label class="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] cursor-pointer group">
+                        <input type="checkbox" id="ads-consent" checked class="w-5 h-5 accent-black border-slate-200 rounded">
+                        <span class="group-hover:text-black text-slate-400 transition">Tailored Advertising</span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-4 shrink-0 w-full lg:w-auto">
+                <button onclick="window.rejectAll()" class="flex-1 lg:flex-none px-8 py-4 border border-slate-200 text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition active:scale-95">Reject All</button>
+                <button onclick="window.savePreferences()" class="flex-1 lg:flex-none px-8 py-4 border border-black text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition active:scale-95">Save Choices</button>
+                <button onclick="window.acceptAll()" class="w-full lg:w-auto px-12 py-4 bg-black text-white text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition active:scale-95">Accept All</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(banner);
+
+    // Global Handlers
+    window.hideBanner = () => {
+        const b = document.getElementById('consent-banner');
+        if (b) b.remove();
+    };
+
+    window.acceptAll = () => {
+        window.dataLayer.push({
+            event: 'update_consent',
+            ad_storage: 'granted',
+            analytics_storage: 'granted',
+            ad_user_data: 'granted',
+            ad_personalization: 'granted'
+        });
+        localStorage.setItem('consent_status', JSON.stringify({ analytics: true, ads: true }));
+        window.hideBanner();
+    };
+
+    window.rejectAll = () => {
+        window.dataLayer.push({
+            event: 'update_consent',
+            ad_storage: 'denied',
+            analytics_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied'
+        });
+        localStorage.setItem('consent_status', JSON.stringify({ analytics: false, ads: false }));
+        window.hideBanner();
+    };
+
+    window.savePreferences = () => {
+        const analytics = document.getElementById('analytics-consent').checked;
+        const ads = document.getElementById('ads-consent').checked;
+        window.dataLayer.push({
+            event: 'update_consent',
+            analytics_storage: analytics ? 'granted' : 'denied',
+            ad_storage: ads ? 'granted' : 'denied',
+            ad_user_data: ads ? 'granted' : 'denied',
+            ad_personalization: ads ? 'granted' : 'denied'
+        });
+        localStorage.setItem('consent_status', JSON.stringify({ analytics, ads }));
+        window.hideBanner();
+    };
+};
+
 // Global Layout Injection
 export const initLayout = () => {
     const user = getUser();
@@ -138,6 +220,7 @@ export const initLayout = () => {
     window.logoutUser = logoutUser;
 
     updateCartBadge();
+    initConsentBanner();
 
     // Include user_id in the page_view. Pass null if the user is not logged in.
     pushToDataLayer('page_view', {

@@ -2,14 +2,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Metadata DataLayer (Loads before GTM) -->
+    <!-- Consent Mode v2 (Absolute Top) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      // 1. Default Consent
+      window.dataLayer.push({
+        event: 'default_consent',
+        ad_storage: 'denied',
+        analytics_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
+      // 4. Load Stored Consent
+      (function() {
+        const stored = localStorage.getItem('consent_status');
+        if (stored) {
+          const consent = JSON.parse(stored);
+          window.dataLayer.push({
+            event: 'update_consent',
+            analytics_storage: consent.analytics ? 'granted' : 'denied',
+            ad_storage: consent.ads ? 'granted' : 'denied',
+            ad_user_data: consent.ads ? 'granted' : 'denied',
+            ad_personalization: consent.ads ? 'granted' : 'denied'
+          });
+        }
+      })();
+    </script>
+
+    <!-- Metadata DataLayer (Extreme top, after consent) -->
     <script>
         (function() {
             const user = JSON.parse(localStorage.getItem('pg_user') || 'null');
             const isReturning = localStorage.getItem('pg_visited') === 'true';
             localStorage.setItem('pg_visited', 'true');
 
-            window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
                 'content_type': 'ecommerce',
                 'content_group': 'home',
