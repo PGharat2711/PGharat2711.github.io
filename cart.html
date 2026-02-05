@@ -31,6 +31,19 @@
     <script>
         (function() {
             const user = JSON.parse(localStorage.getItem('pg_user') || 'null');
+            
+            // Browser Detection Helpers
+            const ua = navigator.userAgent;
+            let browserType = "Other";
+            if (ua.indexOf("Firefox") > -1) browserType = "Firefox";
+            else if (ua.indexOf("SamsungBrowser") > -1) browserType = "Samsung Browser";
+            else if (ua.indexOf("Opera") > -1 || ua.indexOf("OPR") > -1) browserType = "Opera";
+            else if (ua.indexOf("Trident") > -1) browserType = "Internet Explorer";
+            else if (ua.indexOf("Edge") > -1) browserType = "Edge";
+            else if (ua.indexOf("Chrome") > -1) browserType = "Chrome";
+            else if (ua.indexOf("Safari") > -1) browserType = "Safari";
+            const browserVersion = (ua.match(/(?:\b(MSIE |Edge\/|Firefox\/|Chrome\/|Safari\/|Opera\/|OPR\/|rv:))([\d\.]+)/) || ["", "", "unknown"])[2];
+
             window.dataLayer.push({
                 'content_type': 'ecommerce',
                 'content_group': 'cart',
@@ -44,7 +57,18 @@
                 'loyalty_tier': user ? 'Gold' : 'none',
                 'language': navigator.language || 'en-US',
                 'country': 'US',
-                'site_version': '1.2.0'
+                'site_version': '1.2.0',
+                // New Variables
+                'browser_type': browserType,
+                'browser_version': browserVersion,
+                'environment_type': window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'development' : 'production',
+                'internal_employees': user && user.email && user.email.endsWith('@prateekgharat.com') ? true : false,
+                'page_currency': 'USD',
+                'page_previous': document.referrer || 'direct',
+                'page_reload': window.performance && window.performance.getEntriesByType("navigation")[0] && window.performance.getEntriesByType("navigation")[0].type === 'reload' ? true : false,
+                'page_virtual': false,
+                'responsive_pages': true,
+                'server_name': window.location.hostname
             });
         })();
     </script>
