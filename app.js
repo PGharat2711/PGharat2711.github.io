@@ -222,8 +222,8 @@ export const initLayout = () => {
     updateCartBadge();
     initConsentBanner();
 
-    // Include user_id in the page_view. Pass null if the user is not logged in.
-    pushToDataLayer('page_view', {
+    // Include user_id in the page_prateek event. Renamed from 'page_view' per experimental requirements.
+    pushToDataLayer('page_prateek', {
         page_path: window.location.pathname,
         page_title: document.title,
         user_id: user ? user.uid : null
